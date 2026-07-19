@@ -1,4 +1,5 @@
 import Link from "next/link";
+import EyeMark from "@/components/EyeMark";
 import { site } from "@/lib/site";
 
 function IconInstagram() {
@@ -36,12 +37,8 @@ export default function Header() {
           Shows
         </Link>
 
-        <Link
-          href="/"
-          className="font-serif text-2xl font-semibold leading-none tracking-tight text-blue sm:text-[1.7rem]"
-          style={{ fontVariationSettings: '"SOFT" 0, "WONK" 0' }}
-        >
-          Golden Flower
+        <Link href="/" aria-label="Golden Flower — home" className="shrink-0">
+          <EyeMark color="var(--gf-gold)" className="h-7 w-auto sm:h-8" />
         </Link>
 
         <div className="flex items-center gap-4">

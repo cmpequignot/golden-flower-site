@@ -12,6 +12,7 @@
   --gf-teal-deep: #164e4c;
   --gf-rose: #c0857e; /* dusty rose — eye center */
   --gf-rose-soft: #d8a9a3;
+  --gf-gold: #d09868; /* copper/gold from the collage art */
 
   /* Surfaces */
   --gf-paper: #faf7f1; /* warm off-white background */
@@ -34,6 +35,7 @@
   --color-teal-deep: var(--gf-teal-deep);
   --color-rose: var(--gf-rose);
   --color-rose-soft: var(--gf-rose-soft);
+  --color-gold: var(--gf-gold);
   --color-paper: var(--gf-paper);
   --color-paper-alt: var(--gf-paper-alt);
   --color-ink: var(--gf-ink);
@@ -50,19 +52,4 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-\[marquee_22s_linear_infinite\] {
-    animation: none;
-  }
 }

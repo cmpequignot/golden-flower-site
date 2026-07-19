@@ -20,35 +20,6 @@ export default function Home() {
       />
       <h1 className="sr-only">Golden Flower — Orlando Progressive Jazz</h1>
 
-      {/* Out now marquee */}
-      <section className="border-y border-line/70 bg-teal text-paper">
-        <div className="flex overflow-hidden whitespace-nowrap py-3">
-          <div className="animate-[marquee_22s_linear_infinite] flex shrink-0">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <span
-                key={i}
-                className="mx-6 text-sm font-semibold uppercase tracking-[0.3em]"
-              >
-                Out Now
-              </span>
-            ))}
-          </div>
-          <div
-            aria-hidden
-            className="animate-[marquee_22s_linear_infinite] flex shrink-0"
-          >
-            {Array.from({ length: 8 }).map((_, i) => (
-              <span
-                key={i}
-                className="mx-6 text-sm font-semibold uppercase tracking-[0.3em]"
-              >
-                Out Now
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Album feature */}
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
         <div className="grid items-center gap-10 md:grid-cols-2">

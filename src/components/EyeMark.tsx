@@ -1,63 +1,33 @@
 /**
- * EyeMark — the Golden Flower "eye" motif from the Are You Even Awake? cover:
- * concentric rounded-square line frames in brand blue, with a central
- * vesica/eye of teal and dusty-rose rings.
+ * EyeMark — the Golden Flower eye emblem as clean line art.
+ * Single-color (defaults to currentColor) so it can be tinted, e.g. the
+ * copper/gold from the collage art, and stays legible at small sizes.
  */
 export default function EyeMark({
   className,
-  frames = true,
+  color = "currentColor",
 }: {
   className?: string;
-  /** show the nested square frames around the eye */
-  frames?: boolean;
+  color?: string;
 }) {
-  const rings = Array.from({ length: 8 }, (_, i) => i);
   return (
     <svg
-      viewBox="0 0 200 200"
+      viewBox="0 0 100 56"
       className={className}
-      role="img"
-      aria-label="Golden Flower eye emblem"
       fill="none"
+      role="img"
+      aria-hidden
     >
-      <defs>
-        {/* almond / vesica lens shape for the eye */}
-        <clipPath id="eye-lens">
-          <path d="M 40 100 Q 100 55 160 100 Q 100 145 40 100 Z" />
-        </clipPath>
-      </defs>
-
-      {frames &&
-        rings.map((i) => {
-          const inset = 4 + i * 10;
-          const size = 200 - inset * 2;
-          return (
-            <rect
-              key={i}
-              x={inset}
-              y={inset}
-              width={size}
-              height={size}
-              rx={20 - i * 1.5}
-              stroke="var(--gf-blue)"
-              strokeWidth={1.4}
-              opacity={0.9}
-            />
-          );
-        })}
-
-      {/* the eye */}
-      <g clipPath="url(#eye-lens)">
-        <rect x="30" y="55" width="140" height="90" fill="var(--gf-teal)" />
-        <circle cx="100" cy="100" r="34" fill="var(--gf-rose)" />
-        <circle cx="100" cy="100" r="27" fill="var(--gf-teal)" />
-        <circle cx="100" cy="100" r="18" fill="var(--gf-rose)" />
-      </g>
+      {/* almond / vesica outline */}
       <path
-        d="M 40 100 Q 100 55 160 100 Q 100 145 40 100 Z"
-        stroke="var(--gf-blue)"
-        strokeWidth={1.6}
+        d="M3 28 Q50 3 97 28 Q50 53 3 28 Z"
+        stroke={color}
+        strokeWidth={3}
       />
+      {/* iris ring */}
+      <circle cx="50" cy="28" r="16" stroke={color} strokeWidth={3} />
+      {/* pupil */}
+      <circle cx="50" cy="28" r="7" fill={color} />
     </svg>
   );
 }
