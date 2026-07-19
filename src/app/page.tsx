@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import EyeMark from "@/components/EyeMark";
 import NewsletterForm from "@/components/NewsletterForm";
 import { album, members, site } from "@/lib/site";
 
@@ -97,15 +96,14 @@ export default function Home() {
             </div>
           </div>
           <div className="order-1 flex justify-center md:order-2">
-            <div className="w-full max-w-sm rounded-2xl border border-line bg-paper-alt p-8">
-              <EyeMark className="w-full" />
-              <p className="mt-6 text-center font-serif text-xl text-blue">
-                {album.title}
-              </p>
-              <p className="mt-1 text-center text-xs uppercase tracking-[0.2em] text-ink-soft">
-                {album.year} · {album.label}
-              </p>
-            </div>
+            <Image
+              src="/album-cover.png"
+              alt={`${album.title} album cover`}
+              width={1400}
+              height={1400}
+              sizes="(max-width: 768px) 90vw, 448px"
+              className="w-full max-w-md rounded-2xl border border-line shadow-lg"
+            />
           </div>
         </div>
       </section>
