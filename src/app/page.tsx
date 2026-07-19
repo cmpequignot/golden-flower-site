@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import EyeMark from "@/components/EyeMark";
 import NewsletterForm from "@/components/NewsletterForm";
@@ -7,21 +8,32 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-[1.3fr_1fr]">
-          <div>
-            <h1 className="font-serif text-6xl font-semibold leading-[0.95] tracking-tight text-blue sm:text-7xl md:text-8xl">
-              Golden
-              <br />
-              Flower
-            </h1>
-            <p className="mt-5 text-sm font-semibold uppercase tracking-[0.35em] text-teal">
-              {site.tagline}
-            </p>
+      <section className="relative overflow-hidden bg-[#1e242a]">
+        <div className="mx-auto flex max-w-4xl flex-col items-center px-5 py-14 sm:py-20">
+          <div className="relative aspect-square w-full max-w-2xl">
+            <Image
+              src="/cd.png"
+              alt="Golden Flower — Are You Even Awake? record"
+              fill
+              priority
+              sizes="(max-width: 768px) 90vw, 672px"
+              className="object-contain"
+            />
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <h1
+                className="whitespace-nowrap px-4 text-center font-serif font-semibold leading-none text-paper"
+                style={{
+                  fontSize: "clamp(2rem, 9vw, 4.75rem)",
+                  textShadow: "0 2px 30px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9)",
+                }}
+              >
+                Golden Flower
+              </h1>
+            </div>
           </div>
-          <div className="mx-auto w-full max-w-xs md:max-w-none">
-            <EyeMark className="w-full" />
-          </div>
+          <p className="mt-6 text-center text-sm font-semibold uppercase tracking-[0.35em] text-rose">
+            {site.tagline}
+          </p>
         </div>
       </section>
 
