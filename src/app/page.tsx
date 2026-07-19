@@ -66,24 +66,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Meet the band */}
-      <section className="border-t border-line/70 bg-paper-alt">
-        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-          <h2 className="font-serif text-4xl font-semibold text-blue sm:text-5xl">
-            Meet the Band
-          </h2>
-          <ul className="mt-10 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
-            {members.map((m) => (
-              <li key={m.name} className="border-t border-line pt-4">
-                <p className="text-lg font-semibold text-ink">{m.name}</p>
-                <p className="text-sm uppercase tracking-[0.15em] text-teal">
-                  {m.role}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {/* Band photo */}
+      <div className="relative aspect-[3/2] w-full sm:aspect-[16/9] lg:aspect-[21/9]">
+        <Image
+          src="/band-photo.jpg"
+          alt="Golden Flower band members"
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover object-[center_30%]"
+        />
+      </div>
 
       {/* Bio */}
       <section className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
@@ -114,6 +107,54 @@ export default function Home() {
         >
           See upcoming shows →
         </Link>
+      </section>
+
+      {/* Video */}
+      <section className="mx-auto max-w-4xl px-5 pb-16 sm:px-8 sm:pb-24">
+        <div className="relative aspect-video overflow-hidden rounded-2xl border border-line bg-black shadow-lg">
+          <iframe
+            className="absolute inset-0 h-full w-full"
+            src="https://www.youtube-nocookie.com/embed/5Ktoz_LW96s"
+            title="Golden Flower — live performance"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        </div>
+      </section>
+
+      {/* Meet the band */}
+      <section className="border-t border-line/70 bg-paper-alt">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+          <h2 className="font-serif text-4xl font-semibold text-blue sm:text-5xl">
+            Meet the Band
+          </h2>
+          <div className="mt-10 max-w-3xl border-t border-line">
+            {members.map((m) => (
+              <details key={m.name} className="group border-b border-line">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 [&::-webkit-details-marker]:hidden">
+                  <span>
+                    <span className="text-lg font-semibold text-ink">
+                      {m.name}
+                    </span>
+                    <span className="mt-1 block text-sm uppercase tracking-[0.15em] text-teal">
+                      {m.role}
+                    </span>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="relative h-4 w-4 flex-none text-blue transition-transform duration-300 group-open:rotate-45"
+                  >
+                    <span className="absolute left-1/2 top-1/2 h-px w-4 -translate-x-1/2 -translate-y-1/2 bg-current" />
+                    <span className="absolute left-1/2 top-1/2 h-4 w-px -translate-x-1/2 -translate-y-1/2 bg-current" />
+                  </span>
+                </summary>
+                <p className="max-w-prose pb-6 text-base leading-relaxed text-ink-soft">
+                  {m.bio}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Newsletter */}

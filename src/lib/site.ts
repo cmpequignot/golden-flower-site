@@ -11,12 +11,34 @@ export const site = {
   },
 } as const;
 
+// NOTE: `bio` values below are placeholder copy so the accordion has content to
+// show. Replace each with the member's real bio.
 export const members = [
-  { name: "Caitlin Pequignot", role: "Violin, Effects" },
-  { name: "Shawn Villanueva", role: "Trumpet, Flugelhorn, Effects" },
-  { name: "Patrick Moreno", role: "Rhodes, Piano, Effects" },
-  { name: "Brandon Kyle Miller", role: "Upright Bass, Electric Bass, Effects" },
-  { name: "Cameron Gholami", role: "Drums, Percussion" },
+  {
+    name: "Caitlin Pequignot",
+    role: "Violin, Effects",
+    bio: "Placeholder bio — replace with Caitlin's real biography.",
+  },
+  {
+    name: "Shawn Villanueva",
+    role: "Trumpet, Flugelhorn, Effects",
+    bio: "Placeholder bio — replace with Shawn's real biography.",
+  },
+  {
+    name: "Patrick Moreno",
+    role: "Rhodes, Piano, Effects",
+    bio: "Placeholder bio — replace with Patrick's real biography.",
+  },
+  {
+    name: "Brandon Kyle Miller",
+    role: "Upright Bass, Electric Bass, Effects",
+    bio: "Placeholder bio — replace with Brandon's real biography.",
+  },
+  {
+    name: "Cameron Gholami",
+    role: "Drums, Percussion",
+    bio: "Placeholder bio — replace with Cameron's real biography.",
+  },
 ] as const;
 
 export const album = {
