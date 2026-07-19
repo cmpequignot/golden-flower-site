@@ -52,19 +52,19 @@ export default async function ShowsPage() {
                   {show.startTime && ` · ${show.startTime}`}
                   {show.endTime && ` – ${show.endTime}`}
                 </p>
-                {show.venue && (
+                {show.address && (
                   <p className="mt-1 text-ink-soft">
-                    {show.venueLink ? (
+                    {show.mapUrl ? (
                       <a
-                        href={show.venueLink}
+                        href={show.mapUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-blue"
                       >
-                        {show.venue}
+                        {show.address}
                       </a>
                     ) : (
-                      show.venue
+                      show.address
                     )}
                   </p>
                 )}

@@ -1,29 +1,44 @@
 /**
  * Shows data. Reads from Airtable when configured, otherwise returns [].
  *
- * Expected Airtable "Shows" table fields:
- *   Title, Date (date), Start Time, End Time, Venue, Venue Link,
- *   Description, Ticket Link, Published (checkbox)
+ * Reads the "Shows (for Claude)" table in the Golden Flower base. Fields used:
+ *   Venue Name (lookup), Show Date (date), Address (from Venue) (lookup),
+ *   Start Time, End Time, Description, Ticket Link
+ * Past shows (Show Date before today) are filtered out; results are sorted
+ * soonest-first.
  *
  * Env vars:
  *   AIRTABLE_TOKEN, AIRTABLE_BASE_ID, AIRTABLE_SHOWS_TABLE
  */
 export type Show = {
   id: string;
-  title: string;
+  title: string; // venue name
   date: string;
   startTime?: string;
   endTime?: string;
-  venue?: string;
-  venueLink?: string;
+  address?: string;
+  mapUrl?: string;
   description?: string;
   ticketLink?: string;
 };
 
 type AirtableRecord = {
   id: string;
-  fields: Record<string, string | boolean | undefined>;
+  fields: Record<string, unknown>;
 };
+
+/** Lookup fields come back as arrays; unwrap to the first string value. */
+function firstString(value: unknown): string | undefined {
+  if (Array.isArray(value)) value = value[0];
+  return typeof value === "string" && value.length > 0 ? value : undefined;
+}
+
+function mapUrl(address?: string): string | undefined {
+  if (!address) return undefined;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    address,
+  )}`;
+}
 
 export async function getShows(): Promise<Show[]> {
   const token = process.env.AIRTABLE_TOKEN;
@@ -35,8 +50,7 @@ export async function getShows(): Promise<Show[]> {
   const url = new URL(
     `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}`,
   );
-  url.searchParams.set("filterByFormula", "{Published}");
-  url.searchParams.set("sort[0][field]", "Date");
+  url.searchParams.set("sort[0][field]", "Show Date");
   url.searchParams.set("sort[0][direction]", "asc");
 
   const res = await fetch(url, {
@@ -48,17 +62,25 @@ export async function getShows(): Promise<Show[]> {
   if (!res.ok) return [];
 
   const data = (await res.json()) as { records: AirtableRecord[] };
-  return data.records.map((r) => ({
-    id: r.id,
-    title: String(r.fields.Title ?? "Untitled show"),
-    date: String(r.fields.Date ?? ""),
-    startTime: r.fields["Start Time"] as string | undefined,
-    endTime: r.fields["End Time"] as string | undefined,
-    venue: r.fields.Venue as string | undefined,
-    venueLink: r.fields["Venue Link"] as string | undefined,
-    description: r.fields.Description as string | undefined,
-    ticketLink: r.fields["Ticket Link"] as string | undefined,
-  }));
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD (UTC)
+
+  return data.records
+    .map((r): Show => {
+      const address = firstString(r.fields["Address (from Venue)"]);
+      return {
+        id: r.id,
+        title: firstString(r.fields["Venue Name"]) ?? "Golden Flower show",
+        date: firstString(r.fields["Show Date"]) ?? "",
+        startTime: firstString(r.fields["Start Time"]),
+        endTime: firstString(r.fields["End Time"]),
+        address,
+        mapUrl: mapUrl(address),
+        description: firstString(r.fields["Description"]),
+        ticketLink: firstString(r.fields["Ticket Link"]),
+      };
+    })
+    // hide past shows (ISO date strings compare correctly lexicographically)
+    .filter((s) => s.date && s.date >= today);
 }
 
 export function formatShowDate(iso: string): string {
