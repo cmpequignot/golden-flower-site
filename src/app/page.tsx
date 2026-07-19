@@ -8,11 +8,11 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[#1e242a]">
+      <section className="relative overflow-hidden bg-blue-deep">
         <div className="mx-auto flex max-w-4xl flex-col items-center px-5 py-14 sm:py-20">
           <div className="relative aspect-square w-full max-w-2xl">
             <Image
-              src="/cd.png"
+              src="/record.png"
               alt="Golden Flower — Are You Even Awake? record"
               fill
               priority
@@ -31,9 +31,6 @@ export default function Home() {
               </h1>
             </div>
           </div>
-          <p className="mt-6 text-center text-sm font-semibold uppercase tracking-[0.35em] text-rose">
-            {site.tagline}
-          </p>
         </div>
       </section>
 
