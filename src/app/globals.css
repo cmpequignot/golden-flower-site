@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
+/*
+  Golden Flower brand tokens
+  Colors sampled from the "Are You Even Awake?" album art.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core palette */
+  --gf-blue: #2e6d9e; /* brand blue — wordmark, lines, title */
+  --gf-blue-deep: #1c4c73; /* deeper blue for text/contrast */
+  --gf-teal: #1f6f6d; /* the eye */
+  --gf-teal-deep: #164e4c;
+  --gf-rose: #c0857e; /* dusty rose — eye center */
+  --gf-rose-soft: #d8a9a3;
+
+  /* Surfaces */
+  --gf-paper: #faf7f1; /* warm off-white background */
+  --gf-paper-alt: #f0ebe1; /* slightly deeper section background */
+  --gf-ink: #17303c; /* near-black blue-slate for body text */
+  --gf-ink-soft: #4a6069; /* muted text */
+  --gf-line: #ddd5c7; /* hairline / borders */
+
+  --background: var(--gf-paper);
+  --foreground: var(--gf-ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-blue: var(--gf-blue);
+  --color-blue-deep: var(--gf-blue-deep);
+  --color-teal: var(--gf-teal);
+  --color-teal-deep: var(--gf-teal-deep);
+  --color-rose: var(--gf-rose);
+  --color-rose-soft: var(--gf-rose-soft);
+  --color-paper: var(--gf-paper);
+  --color-paper-alt: var(--gf-paper-alt);
+  --color-ink: var(--gf-ink);
+  --color-ink-soft: var(--gf-ink-soft);
+  --color-line: var(--gf-line);
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
+  --font-serif: var(--font-fraunces);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[marquee_22s_linear_infinite\] {
+    animation: none;
+  }
 }
