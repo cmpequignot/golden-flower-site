@@ -6,32 +6,19 @@ import { album, members, site } from "@/lib/site";
 export default function Home() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-blue-deep">
-        <div className="mx-auto flex max-w-4xl flex-col items-center px-5 py-14 sm:py-20">
-          <div className="relative aspect-square w-full max-w-2xl">
-            <Image
-              src="/record.png"
-              alt="Golden Flower — Are You Even Awake? record"
-              fill
-              priority
-              sizes="(max-width: 768px) 90vw, 672px"
-              className="object-contain"
-            />
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-              <h1
-                className="whitespace-nowrap px-4 text-center font-serif font-semibold leading-none text-paper"
-                style={{
-                  fontSize: "clamp(2rem, 9vw, 4.75rem)",
-                  textShadow: "0 2px 30px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9)",
-                }}
-              >
-                Golden Flower
-              </h1>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero — tiled Golden Flower collage */}
+      <section
+        role="img"
+        aria-label="Golden Flower"
+        className="h-[72vh] max-h-[820px] min-h-[440px] w-full bg-[#161310]"
+        style={{
+          backgroundImage: "url('/hero-collage.webp')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "clamp(300px, 40vw, 560px) auto",
+          backgroundPosition: "center",
+        }}
+      />
+      <h1 className="sr-only">Golden Flower — Orlando Progressive Jazz</h1>
 
       {/* Out now marquee */}
       <section className="border-y border-line/70 bg-teal text-paper">
