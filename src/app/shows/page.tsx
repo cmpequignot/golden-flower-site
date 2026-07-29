@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { formatShowDate, getShows } from "@/lib/shows";
+import { formatShowDate, formatShowTime, getShows } from "@/lib/shows";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -16,7 +16,6 @@ export default async function ShowsPage() {
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
           <h1 className="font-serif text-5xl font-semibold text-blue sm:text-6xl">
             Upcoming Shows
-            <span className="text-teal">.</span>
           </h1>
         </div>
       </section>
@@ -42,15 +41,26 @@ export default async function ShowsPage() {
             {shows.map((show) => (
               <li
                 key={show.id}
-                className="rounded-2xl border border-line bg-paper p-6 sm:p-8"
+                className="overflow-hidden rounded-2xl border border-line bg-paper"
               >
+                {/* Plain <img>: Airtable URLs are dynamic/expiring, so next/image optimization isn't a fit. */}
+                {show.imageUrl && (
+                  <img
+                    src={show.imageUrl}
+                    alt=""
+                    className="h-48 w-full object-cover sm:h-56"
+                  />
+                )}
+                <div className="p-6 sm:p-8">
                 <h2 className="font-serif text-2xl font-semibold text-blue sm:text-3xl">
                   {show.title}
                 </h2>
                 <p className="mt-2 text-sm font-semibold uppercase tracking-[0.15em] text-teal">
                   {formatShowDate(show.date)}
-                  {show.startTime && ` · ${show.startTime}`}
-                  {show.endTime && ` – ${show.endTime}`}
+                  {formatShowTime(show.startTime) &&
+                    ` · ${formatShowTime(show.startTime)}`}
+                  {formatShowTime(show.endTime) &&
+                    ` – ${formatShowTime(show.endTime)}`}
                 </p>
                 {show.address && (
                   <p className="mt-1 text-ink-soft">
@@ -83,6 +93,7 @@ export default async function ShowsPage() {
                     Tickets & Info
                   </a>
                 )}
+                </div>
               </li>
             ))}
           </ul>

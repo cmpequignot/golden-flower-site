@@ -2,8 +2,10 @@
  * Shows data. Reads from Airtable when configured, otherwise returns [].
  *
  * Reads the "Shows (for Claude)" table in the Golden Flower base. Fields used:
- *   Venue Name (lookup), Show Date (date), Address (from Venue) (lookup),
- *   Start Time, End Time, Description, Ticket Link
+ *   ID (formula, e.g. "Golden Flower at The Nook | 2026-08-07"; used as title),
+ *   Venue Name (lookup, title fallback), Show Date (date),
+ *   Address (from Venue) (lookup), Start Time, End Time, Description,
+ *   Ticket Link, Venue Image (from Venue) (attachment lookup)
  * Past shows (Show Date before today) are filtered out; results are sorted
  * soonest-first.
  *
@@ -20,6 +22,7 @@ export type Show = {
   mapUrl?: string;
   description?: string;
   ticketLink?: string;
+  imageUrl?: string; // venue photo (Airtable attachment URL; expires ~2h)
 };
 
 type AirtableRecord = {
@@ -31,6 +34,19 @@ type AirtableRecord = {
 function firstString(value: unknown): string | undefined {
   if (Array.isArray(value)) value = value[0];
   return typeof value === "string" && value.length > 0 ? value : undefined;
+}
+
+type AirtableAttachment = {
+  url?: string;
+  thumbnails?: { large?: { url?: string } };
+};
+
+/** Attachment lookups come back as arrays; prefer the "large" thumbnail. */
+function firstAttachmentUrl(value: unknown): string | undefined {
+  const first = Array.isArray(value) ? value[0] : value;
+  if (!first || typeof first !== "object") return undefined;
+  const att = first as AirtableAttachment;
+  return att.thumbnails?.large?.url ?? att.url;
 }
 
 function mapUrl(address?: string): string | undefined {
@@ -69,7 +85,12 @@ export async function getShows(): Promise<Show[]> {
       const address = firstString(r.fields["Address (from Venue)"]);
       return {
         id: r.id,
-        title: firstString(r.fields["Venue Name"]) ?? "Golden Flower show",
+        // The "ID" formula is "Golden Flower at <Venue> | <Date>"; drop the
+        // trailing "| <Date>" since the date is shown on its own line.
+        title:
+          firstString(r.fields["ID"])?.split("|")[0].trim() ??
+          firstString(r.fields["Venue Name"]) ??
+          "Golden Flower show",
         date: firstString(r.fields["Show Date"]) ?? "",
         startTime: firstString(r.fields["Start Time"]),
         endTime: firstString(r.fields["End Time"]),
@@ -77,6 +98,7 @@ export async function getShows(): Promise<Show[]> {
         mapUrl: mapUrl(address),
         description: firstString(r.fields["Description"]),
         ticketLink: firstString(r.fields["Ticket Link"]),
+        imageUrl: firstAttachmentUrl(r.fields["Venue Image (from Venue)"]),
       };
     })
     // hide past shows (ISO date strings compare correctly lexicographically)
@@ -92,5 +114,20 @@ export function formatShowDate(iso: string): string {
     year: "numeric",
     month: "long",
     day: "numeric",
+  });
+}
+
+// The band is Orlando-based; Airtable stores Start/End Time as UTC datetimes,
+// so render them as clock times in Eastern rather than the raw ISO string.
+const SHOW_TIME_ZONE = "America/New_York";
+
+export function formatShowTime(value?: string): string | undefined {
+  if (!value) return undefined;
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value; // not a datetime — show as-is
+  return d.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: SHOW_TIME_ZONE,
   });
 }
