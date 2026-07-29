@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 
 /**
  * Newsletter / interest signup.
- * Writes the email into an Airtable table once these env vars are set:
+ * Writes the email into the Airtable "FanRM" table once these env vars are set:
  *   AIRTABLE_TOKEN            personal access token (scope: data.records:write)
  *   AIRTABLE_BASE_ID          e.g. appXXXXXXXXXXXXXX
- *   AIRTABLE_SUBSCRIBERS_TABLE  table name/id, e.g. "Subscribers"
- * Until then it returns a clear "not configured yet" error.
+ *   AIRTABLE_SUBSCRIBERS_TABLE  FanRM table id/name, e.g. "tblpWuGFyyPgkF2Ds"
+ * FanRM fields written: "Email Address", "Interest Options"
+ * (set to "Joining General Mailing List"), and "Source Type".
+ * Until the env vars are set it returns a clear "not configured yet" error.
  */
 export async function POST(request: Request) {
   let email: unknown;
@@ -46,8 +48,9 @@ export async function POST(request: Request) {
         records: [
           {
             fields: {
-              Email: email,
-              "Signed Up": new Date().toISOString(),
+              "Email Address": email,
+              "Interest Options": ["Joining General Mailing List"],
+              "Source Type": "Website newsletter signup",
             },
           },
         ],

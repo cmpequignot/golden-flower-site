@@ -22,16 +22,16 @@ Copy `.env.example` to `.env.local` and fill in your Airtable credentials:
 AIRTABLE_TOKEN=              # personal access token (data.records:read + write)
 AIRTABLE_BASE_ID=            # e.g. appXXXXXXXXXXXXXX
 AIRTABLE_SHOWS_TABLE=        # table name/id for shows, e.g. Shows
-AIRTABLE_SUBSCRIBERS_TABLE=  # table name/id for newsletter signups, e.g. Subscribers
+AIRTABLE_SUBSCRIBERS_TABLE=  # table name/id for newsletter signups, e.g. FanRM
 ```
 
 Without these, the Shows page shows an empty state and newsletter signups return a "not connected yet" message — the site still builds and runs.
 
 ### Airtable tables
 
-**Shows** — fields: `Title`, `Date` (date), `Start Time`, `End Time`, `Venue`, `Venue Link`, `Description`, `Ticket Link`, `Published` (checkbox). Only rows with `Published` checked are shown, sorted by `Date`.
+**Shows (for Claude)** — fields: `Venue Name` (lookup), `Show Date` (date), `Address (from Venue)` (lookup), `Start Time`, `End Time`, `Description`, `Ticket Link`. Past shows (before today) are hidden; results are sorted soonest-first.
 
-**Subscribers** — fields: `Email`, `Signed Up` (date/datetime).
+**FanRM** — newsletter signups write `Email Address`, `Interest Options` (set to "Joining General Mailing List"), and `Source Type` ("Website newsletter signup").
 
 ## Design
 
