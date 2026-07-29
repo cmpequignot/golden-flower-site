@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import AlbumArt3D from "@/components/AlbumArt3D";
 import NewsletterForm from "@/components/NewsletterForm";
 import { album, members, site } from "@/lib/site";
 import { formatShowDate, formatShowTime, getShows } from "@/lib/shows";
@@ -57,13 +58,10 @@ export default async function Home() {
             </div>
           </div>
           <div className="order-1 flex justify-center md:order-2">
-            <Image
+            <AlbumArt3D
               src="/album-cover.png"
               alt={`${album.title} album cover`}
-              width={1400}
-              height={1400}
-              sizes="(max-width: 768px) 90vw, 448px"
-              className="w-full max-w-md rounded-2xl border border-line shadow-lg"
+              className="w-full max-w-md"
             />
           </div>
         </div>
