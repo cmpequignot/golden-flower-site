@@ -11,17 +11,28 @@ export default async function Home() {
     <>
       {/* Hero — tiled Golden Flower collage */}
       <section
-        role="img"
-        aria-label="Golden Flower"
-        className="h-[72vh] max-h-[820px] min-h-[440px] w-full bg-[#161310]"
+        className="relative flex h-[72vh] max-h-[820px] min-h-[440px] w-full items-center justify-center bg-[#161310]"
         style={{
           backgroundImage: "url('/hero-collage.webp')",
           backgroundRepeat: "repeat",
           backgroundSize: "clamp(300px, 40vw, 560px) auto",
           backgroundPosition: "center",
         }}
-      />
-      <h1 className="sr-only">Golden Flower — Orlando Progressive Jazz</h1>
+      >
+        {/* Scrim keeps the headings legible over the busy collage. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/40"
+        />
+        <div className="relative px-5 text-center sm:px-8">
+          <h1 className="font-serif text-5xl font-semibold text-paper drop-shadow-lg sm:text-7xl lg:text-8xl">
+            {site.name}
+          </h1>
+          <p className="mt-5 text-sm font-semibold uppercase tracking-[0.3em] text-paper/85 drop-shadow sm:mt-6 sm:text-base sm:tracking-[0.4em]">
+            {site.tagline}
+          </p>
+        </div>
+      </section>
 
       {/* Album feature */}
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
