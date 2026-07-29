@@ -2,8 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import NewsletterForm from "@/components/NewsletterForm";
 import { album, members, site } from "@/lib/site";
+import { formatShowDate, formatShowTime, getShows } from "@/lib/shows";
 
-export default function Home() {
+export default async function Home() {
+  const nextShow = (await getShows())[0];
+
   return (
     <>
       {/* Hero — tiled Golden Flower collage */}
@@ -65,6 +68,79 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Upcoming shows — highlight the next one, link to the full list */}
+      {nextShow && (
+        <section className="border-t border-line/70 bg-paper-alt">
+          <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <h2 className="font-serif text-4xl font-semibold text-blue sm:text-5xl">
+                Upcoming Shows
+              </h2>
+              <Link
+                href="/shows"
+                className="rounded-full border border-blue px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.15em] text-blue transition-colors hover:bg-blue hover:text-paper"
+              >
+                See All
+              </Link>
+            </div>
+
+            <div className="mt-10 overflow-hidden rounded-2xl border border-line bg-paper md:grid md:grid-cols-2">
+              {/* Plain <img>: Airtable URLs are dynamic/expiring, so next/image optimization isn't a fit. */}
+              {nextShow.imageUrl && (
+                <img
+                  src={nextShow.imageUrl}
+                  alt=""
+                  className="h-56 w-full object-cover md:h-full"
+                />
+              )}
+              <div className="p-6 sm:p-8">
+                <h3 className="font-serif text-2xl font-semibold text-blue sm:text-3xl">
+                  {nextShow.title}
+                </h3>
+                <p className="mt-2 text-sm font-semibold uppercase tracking-[0.15em] text-teal">
+                  {formatShowDate(nextShow.date)}
+                  {formatShowTime(nextShow.startTime) &&
+                    ` · ${formatShowTime(nextShow.startTime)}`}
+                  {formatShowTime(nextShow.endTime) &&
+                    ` – ${formatShowTime(nextShow.endTime)}`}
+                </p>
+                {nextShow.address && (
+                  <p className="mt-1 text-ink-soft">
+                    {nextShow.mapUrl ? (
+                      <a
+                        href={nextShow.mapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-blue"
+                      >
+                        {nextShow.address}
+                      </a>
+                    ) : (
+                      nextShow.address
+                    )}
+                  </p>
+                )}
+                {nextShow.description && (
+                  <p className="mt-4 leading-relaxed text-ink-soft">
+                    {nextShow.description}
+                  </p>
+                )}
+                {nextShow.ticketLink && (
+                  <a
+                    href={nextShow.ticketLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-6 inline-block rounded-full bg-blue px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.15em] text-paper transition-colors hover:bg-blue-deep"
+                  >
+                    Tickets & Info
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Band photo */}
       <div className="relative aspect-[3/2] w-full sm:aspect-[16/9] lg:aspect-[21/9]">
@@ -130,29 +206,18 @@ export default function Home() {
           </h2>
           <div className="mt-10 max-w-3xl border-t border-line">
             {members.map((m) => (
-              <details key={m.name} className="group border-b border-line">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 [&::-webkit-details-marker]:hidden">
-                  <span>
-                    <span className="text-lg font-semibold text-ink">
-                      {m.name}
-                    </span>
-                    <span className="mt-1 block text-sm uppercase tracking-[0.15em] text-teal">
-                      {m.role}
-                    </span>
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="relative h-4 w-4 flex-none text-blue transition-transform duration-300 group-open:rotate-45"
-                  >
-                    <span className="absolute left-1/2 top-1/2 h-px w-4 -translate-x-1/2 -translate-y-1/2 bg-current" />
-                    <span className="absolute left-1/2 top-1/2 h-4 w-px -translate-x-1/2 -translate-y-1/2 bg-current" />
-                  </span>
-                </summary>
-                <p className="max-w-prose pb-6 text-base leading-relaxed text-ink-soft">
-                  {m.bio}
-                </p>
-              </details>
+              <div key={m.name} className="border-b border-line py-5">
+                <span className="text-lg font-semibold text-ink">
+                  {m.name}
+                </span>
+                <span className="mt-1 block text-sm uppercase tracking-[0.15em] text-teal">
+                  {m.role}
+                </span>
+              </div>
             ))}
+            {/* Bio accordions hidden until real member bios are written.
+                Restore the <details>/<summary> version (git history) to bring
+                back the expandable "+" bios. */}
           </div>
         </div>
       </section>
