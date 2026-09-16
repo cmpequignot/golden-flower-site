@@ -50,11 +50,13 @@ Band facts (genre, hometown, members, notable venues) are defined once in `src/l
 
 ### Social share image
 
-`public/og-band.jpg` is the 1200x630 card shown when a link is shared. Regenerate it after swapping in a new photo:
+`public/og-band.jpg` is the 1200x630 card shown when a link is shared. Only the web-ready crop is committed — point the script at a full-resolution source photo to regenerate it:
 
 ```bash
-node scripts/make-og.mjs public/band-photo.jpg      # optional 2nd arg: vertical focus, 0–1
+node scripts/make-og.mjs path/to/photo.jpg 0    # 2nd arg: vertical focus, 0 (top) to 1 (bottom)
 ```
+
+The focus argument matters for full-body band shots: `0` keeps headroom and crops at the knees, which survives the extra cropping some platforms apply.
 
 ## Deploy
 
