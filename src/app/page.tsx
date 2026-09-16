@@ -59,7 +59,7 @@ export default async function Home() {
                 Buy Now
               </a>
               <a
-                href={site.bandcamp}
+                href={site.appleMusic}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full border border-blue px-7 py-3 text-sm font-semibold uppercase tracking-[0.15em] text-blue transition-colors hover:bg-blue hover:text-paper"

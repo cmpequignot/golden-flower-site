@@ -14,6 +14,7 @@ export const site = {
   name: "Golden Flower",
   tagline: "Orlando Progressive Jazz",
   bandcamp: "https://goldenflower.bandcamp.com/",
+  appleMusic: "https://music.apple.com/us/artist/golden-flower/567630055",
   socials: {
     instagram: "http://instagram.com/goldenflowermusic",
     facebook: "https://www.facebook.com/goldenflowermusic",

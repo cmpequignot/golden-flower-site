@@ -66,6 +66,7 @@ Full listing: ${siteUrl}/shows
 ## Links
 
 - Album and merch (Bandcamp): ${site.bandcamp}
+- Apple Music: ${site.appleMusic}
 - Instagram: ${site.socials.instagram}
 - Facebook: ${site.socials.facebook}
 - YouTube: ${site.socials.youtube}

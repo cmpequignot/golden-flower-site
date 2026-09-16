@@ -44,6 +44,7 @@ export function musicGroupJsonLd() {
     areaServed: hometown,
     sameAs: [
       site.bandcamp,
+      site.appleMusic,
       site.socials.instagram,
       site.socials.facebook,
       site.socials.youtube,
