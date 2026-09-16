@@ -203,3 +203,51 @@ export function formatShowTime(value?: string): string | undefined {
     timeZone: SHOW_TIME_ZONE,
   });
 }
+
+/**
+ * UTC offset (e.g. "-04:00") in effect in the band's timezone on a given day.
+ * Derived per-date rather than hardcoded so schema.org start/end times stay
+ * correct across the EST/EDT switch.
+ */
+function zoneOffset(isoDate: string): string {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: SHOW_TIME_ZONE,
+    timeZoneName: "longOffset",
+  }).formatToParts(new Date(`${isoDate}T12:00:00Z`));
+  const name = parts.find((p) => p.type === "timeZoneName")?.value ?? "";
+  return /GMT([+-]\d{2}:\d{2})/.exec(name)?.[1] ?? "-05:00";
+}
+
+/** Clock time (HH:mm:ss) of an Airtable datetime, as read in Eastern time. */
+function clockInZone(value: string): string | undefined {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return undefined;
+  return d.toLocaleTimeString("en-GB", {
+    timeZone: SHOW_TIME_ZONE,
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+
+/**
+ * A schema.org date-time for a show: a full offset-qualified timestamp when the
+ * time is known, otherwise the bare date (both are valid for Event.startDate).
+ * The show's date always wins over the date half of the Airtable time field,
+ * which only carries a meaningful time of day.
+ */
+export function showDateTimeISO(
+  isoDate: string,
+  time?: string,
+): string | undefined {
+  if (!isoDate) return undefined;
+  if (!time) return isoDate;
+  const clock = clockInZone(time);
+  return clock ? `${isoDate}T${clock}${zoneOffset(isoDate)}` : isoDate;
+}
+
+/** Venue name, from the "Golden Flower at <Venue>" show title. */
+export function venueName(title: string): string {
+  return title.replace(/^golden flower at\s+/i, "").trim() || title;
+}

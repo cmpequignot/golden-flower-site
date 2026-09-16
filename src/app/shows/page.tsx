@@ -1,10 +1,21 @@
 import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
 import { formatShowDate, formatShowTime, getShows } from "@/lib/shows";
 import { site } from "@/lib/site";
+import { musicEventsJsonLd } from "@/lib/structured-data";
+
+const description =
+  "Upcoming Golden Flower live shows and tour dates in Orlando and around Florida, with venue details, set times, and ticket links.";
 
 export const metadata: Metadata = {
-  title: "Shows — Golden Flower",
-  description: "Upcoming Golden Flower shows and events.",
+  title: "Upcoming Shows in Orlando",
+  description,
+  alternates: { canonical: "/shows" },
+  openGraph: {
+    title: "Upcoming Shows — Golden Flower",
+    description,
+    url: "/shows",
+  },
 };
 
 export default async function ShowsPage() {
@@ -12,6 +23,9 @@ export default async function ShowsPage() {
 
   return (
     <>
+      {/* One MusicEvent per show — this is what makes gigs eligible for
+          Google's event results and gives assistants a date to quote. */}
+      {shows.length > 0 && <JsonLd data={musicEventsJsonLd(shows)} />}
       <section className="border-b border-line/70 bg-paper-alt">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
           <h1 className="font-serif text-5xl font-semibold text-blue sm:text-6xl">

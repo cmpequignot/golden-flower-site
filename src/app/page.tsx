@@ -59,7 +59,7 @@ export default async function Home() {
                 Buy Now
               </a>
               <a
-                href={site.bandcamp}
+                href={site.appleMusic}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full border border-blue px-7 py-3 text-sm font-semibold uppercase tracking-[0.15em] text-blue transition-colors hover:bg-blue hover:text-paper"
@@ -155,7 +155,7 @@ export default async function Home() {
       <div className="relative aspect-[3/2] w-full sm:aspect-[16/9] lg:aspect-[21/9]">
         <Image
           src="/band-photo.jpg"
-          alt="Golden Flower band members"
+          alt="The five members of Golden Flower, an Orlando progressive jazz band"
           fill
           sizes="100vw"
           priority
@@ -232,7 +232,10 @@ export default async function Home() {
       </section>
 
       {/* Newsletter */}
-      <section className="border-t border-line/70 bg-blue text-paper">
+      <section
+        id="newsletter"
+        className="border-t border-line/70 bg-blue text-paper"
+      >
         <div className="mx-auto max-w-2xl px-5 py-16 text-center sm:px-8 sm:py-20">
           <h2 className="font-serif text-3xl font-semibold sm:text-4xl">
             Join our newsletter
