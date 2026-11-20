@@ -23,10 +23,12 @@ export type Show = {
   description?: string;
   ticketLink?: string;
   imageUrl?: string; // venue photo (Airtable attachment URL; expires ~2h)
+  createdTime?: string; // when the show was added in Airtable (ISO)
 };
 
 type AirtableRecord = {
   id: string;
+  createdTime: string; // ISO timestamp; Airtable includes it on every record
   fields: Record<string, unknown>;
 };
 
@@ -175,6 +177,7 @@ export async function getShows(): Promise<Show[]> {
         description: firstString(r.fields["Description"]),
         ticketLink: firstString(r.fields["Ticket Link"]),
         imageUrl: venueImageUrl(r.fields),
+        createdTime: r.createdTime,
       };
     })
     // hide past shows (both sides are now YYYY-MM-DD, so string compare is safe)

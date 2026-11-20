@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import AlbumArt3D from "@/components/AlbumArt3D";
 import NewsletterForm from "@/components/NewsletterForm";
 import { album, members, site } from "@/lib/site";
 import { formatShowDate, formatShowTime, getShows } from "@/lib/shows";
+
+// Title, description and share card come from the root layout.
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function Home() {
   const nextShow = (await getShows())[0];
