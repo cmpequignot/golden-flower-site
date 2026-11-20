@@ -50,7 +50,9 @@ export const metadata: Metadata = {
     "Florida jazz band",
     "Are You Even Awake?",
   ],
-  alternates: { canonical: "/" },
+  // No canonical here on purpose: the layout's value is inherited by every
+  // page that doesn't set its own (including the 404), which would declare
+  // them all duplicates of the home page. Each page sets its own canonical.
   openGraph: {
     ...sharedOpenGraph,
     url: "/",
@@ -62,14 +64,13 @@ export const metadata: Metadata = {
     title: "Golden Flower — Orlando Progressive Jazz Band",
     description,
   },
+  // No index/follow here: those are the default, and stating them in the root
+  // layout leaks into the 404 page, which then says both "index" and the
+  // "noindex" Next.js adds for 404s. Only the Google preview limits are set.
   robots: {
-    index: true,
-    follow: true,
     // Let Google use a full-size image and an unclipped snippet — both feed
     // rich results and AI overviews.
     googleBot: {
-      index: true,
-      follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,
       "max-video-preview": -1,
