@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
-import { formatShowDate, formatShowTime, getShows } from "@/lib/shows";
+import {
+  formatShowDate,
+  formatShowPrice,
+  formatShowTime,
+  getShows,
+} from "@/lib/shows";
 import { sharedOpenGraph, sharedTwitter, site } from "@/lib/site";
 import { musicEventsJsonLd } from "@/lib/structured-data";
 
@@ -98,6 +103,11 @@ export default async function ShowsPage() {
                     ) : (
                       show.address
                     )}
+                  </p>
+                )}
+                {formatShowPrice(show.price) && (
+                  <p className="mt-1 font-semibold text-rose">
+                    {formatShowPrice(show.price)}
                   </p>
                 )}
                 {show.description && (
