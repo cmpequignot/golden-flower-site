@@ -91,6 +91,27 @@ export function webSiteJsonLd() {
   };
 }
 
+/**
+ * Split a one-line US address ("1800 N Orange Ave, Orlando, FL 32804") into
+ * PostalAddress parts. Google's event results want the city, state and ZIP as
+ * separate fields. Anything that doesn't match that shape is passed through
+ * whole as streetAddress rather than guessed at.
+ */
+export function postalAddress(address: string) {
+  const m = /^(.+),\s*([^,]+),\s*([A-Z]{2})\s+(\d{5}(?:-\d{4})?)$/.exec(
+    address.trim(),
+  );
+  if (!m) return { "@type": "PostalAddress", streetAddress: address } as const;
+  return {
+    "@type": "PostalAddress",
+    streetAddress: m[1].trim(),
+    addressLocality: m[2].trim(),
+    addressRegion: m[3],
+    postalCode: m[4],
+    addressCountry: "US",
+  } as const;
+}
+
 /** One MusicEvent per upcoming show, wrapped in an @graph. */
 export function musicEventsJsonLd(shows: Show[]) {
   const events = shows.map((show) => {
@@ -113,9 +134,7 @@ export function musicEventsJsonLd(shows: Show[]) {
       location: {
         "@type": "Place",
         name: venue,
-        ...(show.address
-          ? { address: { "@type": "PostalAddress", streetAddress: show.address } }
-          : {}),
+        ...(show.address ? { address: postalAddress(show.address) } : {}),
       },
       performer: { "@id": BAND_ID },
       ...(show.ticketLink
