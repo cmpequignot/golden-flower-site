@@ -137,11 +137,19 @@ export function musicEventsJsonLd(shows: Show[]) {
         ...(show.address ? { address: postalAddress(show.address) } : {}),
       },
       performer: { "@id": BAND_ID },
-      ...(show.ticketLink
+      ...(show.organizer
+        ? { organizer: { "@type": "Organization", name: show.organizer } }
+        : {}),
+      // An Offer needs at least a ticket link or a known price. A price of 0
+      // is a real value (a free show), so test for undefined, not falsiness.
+      ...(show.ticketLink || show.price !== undefined
         ? {
             offers: {
               "@type": "Offer",
-              url: show.ticketLink,
+              url: show.ticketLink ?? `${siteUrl}/shows`,
+              ...(show.price !== undefined
+                ? { price: show.price, priceCurrency: "USD" }
+                : {}),
               availability: "https://schema.org/InStock",
             },
           }
