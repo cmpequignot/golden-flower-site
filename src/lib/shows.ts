@@ -5,7 +5,8 @@
  *   ID (formula, e.g. "Golden Flower at The Nook | 2026-08-07"; used as title),
  *   Venue Name (lookup, title fallback), Show Date (date),
  *   Address (from Venue) (lookup), Start Time, End Time, Description,
- *   Ticket Link, Venue Image (from Venue) (attachment lookup)
+ *   Ticket Link, Venue Image (from Venue) (attachment lookup),
+ *   Price (currency, USD; 0 = free), Organizer (single select)
  * Past shows (Show Date before today in Eastern time) are filtered out;
  * results are sorted soonest-first.
  *
@@ -22,6 +23,8 @@ export type Show = {
   mapUrl?: string;
   description?: string;
   ticketLink?: string;
+  price?: number; // USD; 0 means free. Undefined when the cell is empty.
+  organizer?: string;
   imageUrl?: string; // venue photo (Airtable attachment URL; expires ~2h)
   createdTime?: string; // when the show was added in Airtable (ISO)
 };
@@ -176,6 +179,11 @@ export async function getShows(): Promise<Show[]> {
         mapUrl: mapUrl(address),
         description: firstString(r.fields["Description"]),
         ticketLink: firstString(r.fields["Ticket Link"]),
+        // Currency field: a plain number in the API; omitted when empty.
+        price:
+          typeof r.fields["Price"] === "number" ? r.fields["Price"] : undefined,
+        // Single select: the API returns the choice name as a string.
+        organizer: firstString(r.fields["Organizer"]),
         imageUrl: venueImageUrl(r.fields),
         createdTime: r.createdTime,
       };
