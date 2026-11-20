@@ -204,6 +204,21 @@ export function formatShowDate(iso: string): string {
   });
 }
 
+/**
+ * Price for display: "Free admission" for $0, "$10" for whole dollars,
+ * "$12.50" otherwise. Undefined (an empty Price cell) shows nothing rather
+ * than implying the show is free.
+ */
+export function formatShowPrice(price?: number): string | undefined {
+  if (price === undefined) return undefined;
+  if (price === 0) return "Free admission";
+  return price.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: Number.isInteger(price) ? 0 : 2,
+  });
+}
+
 export function formatShowTime(value?: string): string | undefined {
   if (!value) return undefined;
   const d = new Date(value);
