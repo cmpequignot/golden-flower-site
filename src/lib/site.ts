@@ -30,6 +30,32 @@ export const site = {
 export const bandDescription =
   "Golden Flower is a progressive jazz band based in Orlando, Florida, blending progressive rock, jazz, funk, South American and South Asian music, and electronic dance music into a sound of its own.";
 
+/** The 1200x630 social share card (regenerate with scripts/make-og.mjs). */
+export const ogImage = {
+  url: "/og-band.jpg",
+  width: 1200,
+  height: 630,
+  alt: "Golden Flower, a five-piece progressive jazz band from Orlando, Florida",
+} as const;
+
+/**
+ * Open Graph fields every page should carry. Next.js does not deep-merge
+ * metadata: a page that sets its own `openGraph` replaces the layout's whole
+ * object, so pages must spread this in or they lose the share image.
+ */
+export const sharedOpenGraph = {
+  type: "website" as const,
+  siteName: site.name,
+  locale: "en_US",
+  images: [ogImage],
+};
+
+/** Same idea for X/Twitter, which is also replaced wholesale per page. */
+export const sharedTwitter = {
+  card: "summary_large_image" as const,
+  images: [ogImage.url],
+};
+
 /** Facts used to build the MusicGroup structured data. */
 export const bandFacts = {
   genre: "Progressive jazz",

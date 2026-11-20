@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
 import { formatShowDate, formatShowTime, getShows } from "@/lib/shows";
-import { site } from "@/lib/site";
+import { sharedOpenGraph, sharedTwitter, site } from "@/lib/site";
 import { musicEventsJsonLd } from "@/lib/structured-data";
 
 const description =
@@ -11,10 +11,18 @@ export const metadata: Metadata = {
   title: "Upcoming Shows in Orlando",
   description,
   alternates: { canonical: "/shows" },
+  // Spread the shared fields in: Next.js replaces, rather than merges, the
+  // layout's openGraph/twitter objects when a page sets its own.
   openGraph: {
+    ...sharedOpenGraph,
     title: "Upcoming Shows — Golden Flower",
     description,
     url: "/shows",
+  },
+  twitter: {
+    ...sharedTwitter,
+    title: "Upcoming Shows — Golden Flower",
+    description,
   },
 };
 

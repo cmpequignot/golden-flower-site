@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
-import { siteUrl } from "@/lib/site";
+import { sharedOpenGraph, sharedTwitter, siteUrl } from "@/lib/site";
 import { musicGroupJsonLd, webSiteJsonLd } from "@/lib/structured-data";
 
 const inter = Inter({
@@ -31,13 +31,6 @@ const fraunces = Fraunces({
 const description =
   "Progressive jazz band from Orlando, Florida — prog rock, funk, and South American and South Asian influences. Debut album Are You Even Awake? out now.";
 
-const ogImage = {
-  url: "/og-band.jpg",
-  width: 1200,
-  height: 630,
-  alt: "Golden Flower, a five-piece progressive jazz band from Orlando, Florida",
-};
-
 export const metadata: Metadata = {
   // Lets every other metadata field below use a relative path.
   metadataBase: new URL(siteUrl),
@@ -59,19 +52,15 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/" },
   openGraph: {
-    type: "website",
-    siteName: "Golden Flower",
-    locale: "en_US",
+    ...sharedOpenGraph,
     url: "/",
     title: "Golden Flower — Orlando Progressive Jazz Band",
     description,
-    images: [ogImage],
   },
   twitter: {
-    card: "summary_large_image",
+    ...sharedTwitter,
     title: "Golden Flower — Orlando Progressive Jazz Band",
     description,
-    images: [ogImage.url],
   },
   robots: {
     index: true,

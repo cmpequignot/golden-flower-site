@@ -6,14 +6,22 @@
  * coming up — rather than inferring it from prose. This is what backs rich
  * results for concerts and what conversational search tends to quote.
  */
-import { album, bandDescription, bandFacts, members, site, siteUrl } from "./site";
+import {
+  album,
+  bandDescription,
+  bandFacts,
+  members,
+  ogImage as sharedOgImage,
+  site,
+  siteUrl,
+} from "./site";
 import { showDateTimeISO, venueName, type Show } from "./shows";
 
 /** Stable @id for the band, so other nodes can reference it instead of
  *  repeating the whole object. */
 export const BAND_ID = `${siteUrl}/#band`;
 
-const ogImage = `${siteUrl}/og-band.jpg`;
+const ogImage = `${siteUrl}${sharedOgImage.url}`;
 
 const hometown = {
   "@type": "Place",
@@ -98,7 +106,10 @@ export function musicEventsJsonLd(shows: Show[]) {
       eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
       url: `${siteUrl}/shows`,
       ...(show.description ? { description: show.description } : {}),
-      ...(show.imageUrl ? { image: show.imageUrl } : {}),
+      // Deliberately not show.imageUrl: Airtable attachment URLs expire after
+      // ~2 hours, and Google fetches structured-data images long after the
+      // page is crawled. Use permanent images hosted on this site instead.
+      image: [ogImage, `${siteUrl}/album-cover.png`],
       location: {
         "@type": "Place",
         name: venue,
